@@ -26,8 +26,8 @@ void widget::on_GoButton_clicked()
    QString APP_ID = "5145977";
    QString PERMISSIONS = "4096";
    QString REDIRECT_URI = "https://oauth.vk.com/blank.html";
-   QString DISPLAY = "popup";
-   QString API_VERSION = "5.40";
+   QString DISPLAY = "mobile";
+   QString API_VERSION = "5.64";
    QString URL1 = "https://oauth.vk.com/authorize?client_id=" + APP_ID + "&scope=" + PERMISSIONS +
            "&redirect_uri=" + REDIRECT_URI + "&display=" + DISPLAY + "&v=" + API_VERSION + "&response_type=token";
    QUrl URL = URL1;

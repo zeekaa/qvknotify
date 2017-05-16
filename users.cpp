@@ -22,7 +22,7 @@ void users::get ()
 
     if(reply->error() == QNetworkReply::NoError)
     {
-        qDebug() << "No error, continuing";
+        qDebug() << "No user error, continuing";
 
         QString strReply = (QString)reply->readAll(); //read json
         QJsonDocument jsonResponse = QJsonDocument::fromJson(strReply.toUtf8());

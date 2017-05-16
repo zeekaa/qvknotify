@@ -20,19 +20,22 @@ SOURCES += main.cpp\
     dialog.cpp \
     message.cpp \
     users.cpp \
-    about.cpp
+    about.cpp \
+    dialogform.cpp
 
 HEADERS  += widget.h \
     mainwindow.h \
     dialog.h \
     message.h \
     users.h \
-    about.h
+    about.h \
+    dialogform.h
 
 FORMS    += widget.ui \
     mainwindow.ui \
     dialog.ui \
-    about.ui
+    about.ui \
+    dialogform.ui
 
 TRANSLATIONS   += qvknotify_ru_RU.ts \
 qvknotify_en_GB.ts

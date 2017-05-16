@@ -27,13 +27,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     timer = new QTimer(this);//for auto update
     timer->setSingleShot(true);
-    timer->setInterval(6000);
-    connect(timer, SIGNAL(timeout()), SLOT(on_GetButton_pressed()));
+    timer->setInterval(600000000);
+    //connect(timer, SIGNAL(timeout()), SLOT(on_GetButton_pressed()));
     sysTrayIcon();
 
     on_actionLogin_triggered();//autologin
 
-    on_GetButton_pressed();//first update
+//    on_GetButton_pressed();//first update
 }
 
 MainWindow::~MainWindow()
@@ -171,27 +171,28 @@ void MainWindow::on_GetButton_pressed()
             }
             delete ui->widget->layout();
     }
-    QVBoxLayout* messageList = new QVBoxLayout;
+    QVBoxLayout* NewDialogList = new QVBoxLayout;
 
     QString prev_id;
     int i = 0;
 
-    while (1)
+    while (1)//FIXME
     {
-        message check( access_token, "0", QString::number(i) );
-        check.get();
-        if ( check.id == (QString)"0" )
+        Dialog check;
+        check.getDialogs( user_ID, access_token);
+        if ( check.dialogList->id == (QString)"0" )
         {
             qDebug() << "No more new messages. Bailing out";
             break;
         }
         Dialog* got = new Dialog(this);
-        got->fill( check.user_id, access_token , check.body );
-        messageList->addWidget(got);
+
+        got->fill( check.dialogList->user_id, access_token , check.dialogList->body );
+        NewDialogList->addWidget(got);
 
         trayIcon->setIcon((QIcon)"res/icon_new.png");
 
-        users currentUser(access_token,check.user_id);
+        users currentUser( access_token, check.dialogList->user_id);
         currentUser.get();
 
         if (flag == true)
@@ -211,9 +212,7 @@ void MainWindow::on_GetButton_pressed()
         flag = true;
     }
 
-    ui->widget->setLayout(messageList);
-//    delete timer;
-
+    ui->widget->setLayout(NewDialogList);
     timer->start();
 }
 

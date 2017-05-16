@@ -14,7 +14,7 @@ message::message(QString access_token, QString out, QString offset)
 
 void message::get ()
 {
-    QEventLoop eventLoop;
+    //QEventLoop eventLoop;
 
     QUrl request_url("https://api.vk.com/method/messages.get");
     QUrlQuery query;
@@ -28,14 +28,14 @@ void message::get ()
     request_url.setQuery(query);
 
     QNetworkAccessManager* nam = new QNetworkAccessManager();
-    QObject::connect(nam, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
+    //QObject::connect(nam, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
 
     QNetworkReply* reply = nam->get(QNetworkRequest(request_url));    //request
-    eventLoop.exec();
+    //eventLoop.exec();
 
     if(reply->error() == QNetworkReply::NoError) {
 
-        qDebug() << "No error, continuing";
+        qDebug() << "No message error, continuing";
 
         QString strReply = (QString)reply->readAll(); //read json
         QJsonDocument jsonResponse = QJsonDocument::fromJson(strReply.toUtf8());

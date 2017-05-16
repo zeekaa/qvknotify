@@ -2,6 +2,9 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include <QNetworkAccessManager>
+
+#include "message.h"
 
 namespace Ui {
 class Dialog;
@@ -15,7 +18,9 @@ public:
     explicit Dialog(QWidget *parent = 0);
     ~Dialog();
     QString user_id;
+    message* dialogList;
 
+    void getDialogs( QString offset, QString access_token);
     void fill(QString user_id, QString access_token, QString body);
 
 private slots:
