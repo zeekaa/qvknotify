@@ -22,6 +22,8 @@ private slots:
 
     void on_webView_urlChanged(const QUrl &arg1);
 
+    void on_webView_titleChanged(const QString &title);
+
 private:
     Ui::widget *ui;
 };

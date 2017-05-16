@@ -14,6 +14,7 @@ widget::widget(QWidget *parent) :
     ui(new Ui::widget)
 {
     ui->setupUi(this);
+    on_GoButton_clicked();
 }
 
 widget::~widget()
@@ -35,14 +36,23 @@ void widget::on_GoButton_clicked()
 }
 
 void widget::on_webView_urlChanged(const QUrl &arg1)
-{
+{;
     QString URL1 = arg1.toString();
     URL1.replace("#","?");
     QUrl URL = URL1;
     QUrlQuery query(URL);
     widget::access_token = query.queryItemValue("access_token");
     widget::user_ID = query.queryItemValue("user_id");
-    if (user_ID != 0)
-        delete ui;
+}
 
+void widget::on_webView_titleChanged(const QString &title)
+{
+    QUrl track = "https://api.vk.com/method/stats.trackVisitor?access_token=" + access_token;
+    QUrlQuery trackQuery(track);
+    if (title.contains("OAuth"))
+    {
+        ui->GoButton->setDisabled(1);
+        ui->GoButton->setText("Close");
+        ui->webView->setVisible(false);
+    }
 }

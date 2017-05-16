@@ -20,7 +20,7 @@ public:
     QString user_id;
     message* dialogList;
 
-    void getDialogs( QString offset, QString access_token);
+    void getDialogs( int offset, QString access_token);
     void fill(QString user_id, QString access_token, QString body);
 
 private slots:

@@ -18,6 +18,8 @@ public:
 private slots:
     void on_button_aboutQt_pressed();
 
+    void on_Button_github_pressed();
+
 private:
     Ui::About *ui;
 };

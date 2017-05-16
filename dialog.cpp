@@ -26,7 +26,7 @@ Dialog::~Dialog()
     delete ui;
 }
 
-void Dialog::getDialogs( QString offset, QString access_token)
+void Dialog::getDialogs( int offset, QString access_token)
 {
     dialogList = new message(access_token, "0","0");
 
@@ -36,7 +36,7 @@ void Dialog::getDialogs( QString offset, QString access_token)
     QUrl request_url("https://api.vk.com/method/messages.getDialogs");
     QUrlQuery query;
     query.addQueryItem("count", "1");
-    //query.addQueryItem("offset", offset);
+    query.addQueryItem("offset", QString::number(offset));
     query.addQueryItem("access_token", access_token); //form the URL of request
     request_url.setQuery(query);
 
@@ -46,8 +46,7 @@ void Dialog::getDialogs( QString offset, QString access_token)
     QNetworkReply* reply = nam->get(QNetworkRequest(request_url));    //request
     qDebug() << request_url;
     eventLoop.exec();
-    int i = 0;
-    //while (i != 1)
+    //while (1)
     {
         if(reply->error() == QNetworkReply::NoError) {
 

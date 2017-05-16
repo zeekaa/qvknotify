@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     message.cpp \
     users.cpp \
     about.cpp \
-    dialogform.cpp
+    dialogform.cpp \
+    error.cpp
 
 HEADERS  += widget.h \
     mainwindow.h \
@@ -29,7 +30,8 @@ HEADERS  += widget.h \
     message.h \
     users.h \
     about.h \
-    dialogform.h
+    dialogform.h \
+    error.h
 
 FORMS    += widget.ui \
     mainwindow.ui \

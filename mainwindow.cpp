@@ -27,13 +27,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     timer = new QTimer(this);//for auto update
     timer->setSingleShot(true);
-    timer->setInterval(600000000);
-    //connect(timer, SIGNAL(timeout()), SLOT(on_GetButton_pressed()));
+    timer->setInterval(60000);
+    connect(timer, SIGNAL(timeout()), SLOT(on_GetButton_pressed()));
     sysTrayIcon();
 
     on_actionLogin_triggered();//autologin
 
-//    on_GetButton_pressed();//first update
+    on_GetButton_pressed();//first update
 }
 
 MainWindow::~MainWindow()
@@ -59,20 +59,20 @@ void MainWindow::clickSysTrayIcon(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason)
     {
-    case QSystemTrayIcon::DoubleClick:
-        if (this->isHidden())
-            this->showNormal();
+        case QSystemTrayIcon::DoubleClick:
+        break;
+        case QSystemTrayIcon::MiddleClick:
+        break;
+        case QSystemTrayIcon::Unknown:
+        break;
+        case QSystemTrayIcon::Context:
+        break;
+        case QSystemTrayIcon::Trigger:
+        if (this->isHidden() == true)
+            this->setVisible(1);
         else
-            this->hide();
-    break;
-    case QSystemTrayIcon::MiddleClick:
-    break;
-    case QSystemTrayIcon::Unknown:
-    break;
-    case QSystemTrayIcon::Context:
-    break;
-    case QSystemTrayIcon::Trigger:
-    break;
+            this->setVisible(0);
+        break;
     }
 }
 
@@ -173,14 +173,13 @@ void MainWindow::on_GetButton_pressed()
     }
     QVBoxLayout* NewDialogList = new QVBoxLayout;
 
-    QString prev_id;
     int i = 0;
 
-    while (1)//FIXME
+    while (1)
     {
         Dialog check;
-        check.getDialogs( user_ID, access_token);
-        if ( check.dialogList->id == (QString)"0" )
+        check.getDialogs( i, access_token);
+        if ( check.dialogList->read_state == (QString)"1" )
         {
             qDebug() << "No more new messages. Bailing out";
             break;

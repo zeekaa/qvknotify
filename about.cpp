@@ -8,8 +8,6 @@ About::About(QWidget *parent) :
     ui(new Ui::About)
 {
     ui->setupUi(this);
-    ui->Button_github->setEnabled(0);
-    ui->Button_github->setToolTip("Comming soon");
 }
 
 About::~About()
@@ -21,4 +19,11 @@ void About::on_button_aboutQt_pressed()
 {
     QUrl url("https://wiki.qt.io/About_Qt");
     QDesktopServices::openUrl(url);
+}
+
+void About::on_Button_github_pressed()
+{
+    QUrl url("https://github.com/zeekaa/qvknotify");
+    QDesktopServices::openUrl(url);
+
 }

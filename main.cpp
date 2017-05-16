@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     file.open(QIODevice::ReadOnly);
     QTextStream s(&file);
     lang = s.readLine();
-    if(lang=="")
+    if(lang == "")
     {
         lang = QLocale::system().name();
         qDebug() << "Can't load language preference, using system locale";
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     qDebug() << "lang" << lang;
 
     QTranslator translator;
-    translator.load("qvknotify_"+lang ,"l10n");
+    translator.load("qvknotify_" + lang);
     if (a.installTranslator(&translator)==true)
         qDebug() << lang << "localization loaded";
 
