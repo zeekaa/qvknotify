@@ -21,8 +21,7 @@ SOURCES += main.cpp\
     message.cpp \
     users.cpp \
     about.cpp \
-    dialogform.cpp \
-    error.cpp
+    dialogform.cpp
 
 HEADERS  += widget.h \
     mainwindow.h \
