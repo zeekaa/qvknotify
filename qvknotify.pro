@@ -29,8 +29,7 @@ HEADERS  += widget.h \
     message.h \
     users.h \
     about.h \
-    dialogform.h \
-    error.h
+    dialogform.h
 
 FORMS    += widget.ui \
     mainwindow.ui \

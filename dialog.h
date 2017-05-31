@@ -21,7 +21,6 @@ public:
     message* dialogList;
 
     void getDialogs( int offset, QString access_token);
-    void fill(QString user_id, QString access_token, QString body);
 
 private slots:
     void on_ButtonInBrowser_pressed();

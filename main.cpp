@@ -43,5 +43,6 @@ int main(int argc, char *argv[])
 //              поддержка чатов
 //              обнаружение вложений
 //              быстрый ответ
+//              error handling
 //DONE          tray icon
 //WONTFIX       поддержка libnotify и/или его аналог на windows

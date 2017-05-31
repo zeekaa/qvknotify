@@ -171,27 +171,25 @@ void MainWindow::on_GetButton_pressed()
             }
             delete ui->widget->layout();
     }
-    QVBoxLayout* NewDialogList = new QVBoxLayout;
+
+    QVBoxLayout* NewDialogList = new QVBoxLayout();
+    NewDialogList->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    ui->widget->setLayout(NewDialogList);
 
     int i = 0;
-
-    while (1)
+    QString lastUser = NULL;
+    Dialog* gotPrev = NULL;
+    while (i != 10)
     {
-        Dialog check;
-        check.getDialogs( i, access_token);
-        if ( check.dialogList->read_state == (QString)"1" )
-        {
-            qDebug() << "No more new messages. Bailing out";
+        Dialog* check = new Dialog;
+        check->getDialogs( i, access_token);
+        if (check->dialogList->read_state == (QString)"1")
             break;
-        }
-        Dialog* got = new Dialog(this);
-
-        got->fill( check.dialogList->user_id, access_token , check.dialogList->body );
-        NewDialogList->addWidget(got);
+        NewDialogList->addWidget(check);
 
         trayIcon->setIcon((QIcon)"res/icon_new.png");
 
-        users currentUser( access_token, check.dialogList->user_id);
+        users currentUser( access_token, check->dialogList->user_id);
         currentUser.get();
 
         if (flag == true)
@@ -200,6 +198,7 @@ void MainWindow::on_GetButton_pressed()
             flag = false;
         }
 
+        lastUser = check->dialogList->user_id;
         i++;
     }
     ui->statusbar->showMessage(tr("Done"));
@@ -211,7 +210,7 @@ void MainWindow::on_GetButton_pressed()
         flag = true;
     }
 
-    ui->widget->setLayout(NewDialogList);
+
     timer->start();
 }
 

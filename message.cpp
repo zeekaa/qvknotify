@@ -50,7 +50,7 @@ void message::get ()
         this->title = response.value("title").toString();
         this->body = response.value("body").toString();
         this->read_state = QString::number(response["read_state"].toDouble());
-        this->date = QString::number(response["date"].toDouble());
+        this->date = response.value("body").toString().toLongLong();
 
 
         qDebug() << "recieved message #" << id << " from " << user_id;

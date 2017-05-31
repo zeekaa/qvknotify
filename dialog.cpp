@@ -13,6 +13,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QDateTime>
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
@@ -65,10 +66,54 @@ void Dialog::getDialogs( int offset, QString access_token)
             this->dialogList->title = response.value("title").toString();
             this->dialogList->body = response.value("body").toString();
             this->dialogList->read_state = QString::number(response["read_state"].toDouble());
-            this->dialogList->date = QString::number(response["date"].toDouble());
+            this->dialogList->date = response.value("date").toInt();
 
 
-//            qDebug() << "recieved dialog with last message #" << id << " from " << user_id;
+            qDebug() << "recieved dialog " << this->dialogList->body << " from " << user_id;
+
+            if (this->dialogList->read_state == (QString)"0")
+            {
+                ui->textEdit_Sent->setReadOnly(1);
+                QDateTime time;
+                time.setSecsSinceEpoch(this->dialogList->date);
+
+                qDebug() << time;
+                QLabel* timeWidget = new QLabel;
+                timeWidget->setText("at " + time.toString());
+                ui->verticalLayout_2->addWidget(timeWidget);
+
+                users currentUser(access_token, this->dialogList->user_id);
+                currentUser.get();
+                ui->sender->setText(currentUser.first_name + " " + currentUser.last_name);
+                ui->textEdit_Sent->append(this->dialogList->body);
+                qDebug() << "Userpic URL:" << currentUser.photo_50;
+
+                QEventLoop eventLoop;
+
+                QNetworkAccessManager* nam = new QNetworkAccessManager;
+                QObject::connect(nam, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
+
+                QUrl url(currentUser.photo_50);
+                QNetworkReply* reply = nam->get(QNetworkRequest(url));
+                eventLoop.exec();
+
+                if(reply->error() == QNetworkReply::NoError)
+                {
+                    QByteArray photo_50_bytes = reply->readAll();  // bytes
+                    QImage img(20, 20, QImage::Format_Indexed8);
+                    img.loadFromData(photo_50_bytes);
+                    ui->userPic->setPixmap(QPixmap::fromImage(img));
+
+                    qDebug() << "photo_50 set";
+
+                }
+                else
+                {
+                    qDebug() << "Unable to recieve photo_50";
+                }
+                delete reply;
+            }
+
 
         } else {
             qDebug() << "NETWORK ERROR";
@@ -78,42 +123,6 @@ void Dialog::getDialogs( int offset, QString access_token)
 
 }
 
-void Dialog::fill(QString user_id, QString access_token, QString body)
-{
-    ui->textEdit_Sent->setReadOnly(1);
-    this->user_id = user_id;
-    users currentUser(access_token, user_id);
-    currentUser.get();
-    ui->sender->setText(currentUser.first_name + " " + currentUser.last_name);
-    ui->textEdit_Sent->append(body);
-
-    qDebug() << "Userpic URL:" << currentUser.photo_50;
-
-    QEventLoop eventLoop;
-
-    QNetworkAccessManager* nam = new QNetworkAccessManager;
-    QObject::connect(nam, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
-
-    QUrl url(currentUser.photo_50);
-    QNetworkReply* reply = nam->get(QNetworkRequest(url));
-    eventLoop.exec();
-
-    if(reply->error() == QNetworkReply::NoError)
-    {
-        QByteArray photo_50_bytes = reply->readAll();  // bytes
-        QImage img(20, 20, QImage::Format_Indexed8);
-        img.loadFromData(photo_50_bytes);
-        ui->userPic->setPixmap(QPixmap::fromImage(img));
-
-        qDebug() << "photo_50 set";
-
-    }
-    else
-    {
-        qDebug() << "Unable to recieve photo_50";
-    }
-    delete reply;
-}
 
 void Dialog::on_ButtonInBrowser_pressed()
 {

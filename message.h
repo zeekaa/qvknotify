@@ -14,7 +14,7 @@ public:
 
     QString id;                 // 	Message ID. (Not returned for forwarded messages.)
     QString user_id;            // 	For an incoming message, the user ID of the author. For an outgoing message, the user ID of the receiver.
-    QString date;               // 	Date (in Unix time) when the message was sent.
+    qint64 date;               // 	Date (in Unix time) when the message was sent.
     QString read_state;        // 	Message status (0 — not read, 1 — read). (Not returned for forwarded messages.)
     QString out;               // 	Message type (0 — received, 1 — sent). (Not returned for forwarded messages.)
     QString title;              // 	Title of message or chat.
